@@ -6,8 +6,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int A = Integer.parseInt(br.readLine());
-        int B = Integer.parseInt(br.readLine());
-        System.out.println((A>0) ? ((B>0) ? "1" : "4") : ((B>0) ? "2" : "3"));
+        int X = Integer.parseInt(br.readLine());
+        int Y = Integer.parseInt(br.readLine());
+        System.out.println((X>0) ? ((Y>0) ? "1" : "4") : ((Y>0) ? "2" : "3"));
     }
 }
