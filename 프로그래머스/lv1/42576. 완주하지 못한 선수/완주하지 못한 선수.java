@@ -1,12 +1,21 @@
-import java.util.*;
+import java.util.HashMap;
+
 class Solution {
     public String solution(String[] participant, String[] completion) {
-        Arrays.sort(participant);
-        Arrays.sort(completion);
-        for (int i = 0; i < participant.length-1; i++) {
-            if(!participant[i].equals(completion[i]))
-                return participant[i];
+        String answer = "";
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        for (String player : participant) {
+            hashMap.put(player, hashMap.getOrDefault(player, 0) + 1);
         }
-        return participant[participant.length-1];
+        for (String player : completion) {
+            hashMap.put(player, hashMap.get(player) - 1);
+        }
+        for (String key : hashMap.keySet()) {
+            if (hashMap.get(key) != 0) {
+                answer = key;
+                break;
+            }
+        }
+        return answer;
     }
 }
