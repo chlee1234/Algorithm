@@ -9,7 +9,7 @@ class Solution {
             hs.add(phone_number);
         }
         for (String phone_number : phone_book) {
-            for (int i = 0; i < phone_number.length(); i++){
+            for (int i = 1; i < phone_number.length(); i++){
                 if (hs.contains(phone_number.substring(0,i))){
                     return false;
                 }
