@@ -1,61 +1,61 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    final static int MAX = 1000 + 1;
-    static boolean[][] graph;
+    static ArrayList<Integer>[] A;
     static boolean[] visited;
-    static ArrayList<Integer> queue;
-    static int N, M, V;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        V = Integer.parseInt(st.nextToken());
-
-        // 1. graph 정보 입력
-        graph = new boolean[MAX][MAX];
-        visited = new boolean[MAX];
-
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int V = Integer.parseInt(st.nextToken());
+        A = new ArrayList[N + 1];
+        for (int i = 1; i <= N; i++) {
+            A[i] = new ArrayList<>();
+        }
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine()," ");
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-            graph[x][y] = graph[y][x] = true;
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            A[start].add(end);
+            A[end].add(start);
         }
-        // 2. dfs
+        // 번호가 작은 것을 먼저 방문하기 위해 정렬하기
+        for (int i = 1; i <= N; i++) {
+            Collections.sort(A[i]);
+        }
+        visited = new boolean[N + 1];  // 방문 배열 초기화하기
         dfs(V);
         System.out.println();
-        // 3. bfs
-        bfs();
+        visited = new boolean[N + 1];  // 방문 배열 초기화하기
+        bfs(V);
     }
 
-    static void dfs(int idx) {
+    public static void dfs(int idx) {
         System.out.print(idx + " ");
         visited[idx] = true;
-        for (int i = 1; i <= N; i++) {
-            if (!visited[i] && graph[idx][i])
+        for (int i : A[idx]) {
+            if (!visited[i]) {   // 연결 노드 중 방문하지 않았던 노드만 탐색하기
                 dfs(i);
+            }
         }
     }
 
-    static void bfs() {
-        queue = new ArrayList<>();
-        visited = new boolean[MAX];
-
-        queue.add(V);
-        visited[V] = true;
+    public static void bfs(int idx) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(idx);
+        visited[idx] = true;
 
         while (!queue.isEmpty()) {
-            int idx = queue.remove(0);
-            System.out.print(idx + " ");
-            for (int i = 1; i <= N; i++) {
-                if (!visited[i] && graph[idx][i]) {
+            int now_idx = queue.poll();
+            System.out.print(now_idx + " ");
+            for (int i : A[now_idx]) {
+                if (!visited[i]) {
                     visited[i] = true;
                     queue.add(i);
                 }
